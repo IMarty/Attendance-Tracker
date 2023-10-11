@@ -16,7 +16,7 @@ students = [
 ]
 
 # Verbs + Endpoints
-@router.get('/students', response_model=List[Student])
+@router.get('/', response_model=List[Student])
 async def get_student():
     """ List all the students from a Training Center (context fonctionnel ou technique) """
     return students
@@ -24,7 +24,7 @@ async def get_student():
 # 1. Exercice (10min) Create new Student: POST
 # response_model permet de définir de type de réponse (ici nous retournons le student avec sont id)
 # status_code est définit sur 201-Created car c'est un POST
-@router.post('/students', response_model=Student, status_code=201)
+@router.post('/', response_model=Student, status_code=201)
 async def create_student(givenName:StudentNoID):
     # génération de l'identifiant unique
     generatedId=uuid.uuid4()
@@ -39,7 +39,7 @@ async def create_student(givenName:StudentNoID):
 
 # 2. Exercice (10min) Student GET by ID
 # response_model est un Student car nous souhaitons trouvé l'étudiant correspodant à l'ID
-@router.get('/students/{student_id}', response_model=Student)
+@router.get('/{student_id}', response_model=Student)
 async def get_student_by_ID(student_id:str): # student_id correspond au URI parameter du path: '/students/{student_id}'
     #On parcours chaque étudiant de la liste
     for student in students:
@@ -52,7 +52,7 @@ async def get_student_by_ID(student_id:str): # student_id correspond au URI para
     raise HTTPException(status_code= 404, detail="Student not found")
 
 # 3. Exercice (10min) PATCH Student (name)
-@router.patch('/students/{student_id}', status_code=204)
+@router.patch('/{student_id}', status_code=204)
 async def modify_student_name(student_id:str, modifiedStudent: StudentNoID):
     for student in students:
         if student.id == student_id:
@@ -61,7 +61,7 @@ async def modify_student_name(student_id:str, modifiedStudent: StudentNoID):
     raise HTTPException(status_code= 404, detail="Student not found")
 
 # 4. Exercice (10min) DELETE Student
-@router.delete('/students/{student_id}', status_code=204)
+@router.delete('/{student_id}', status_code=204)
 async def delete_student(student_id:str):
     for student in students:
         if student.id == student_id:
