@@ -6,7 +6,7 @@ from documentations.description import api_description
 from documentations.tags import tags_metadata
 
 #Routers
-import routers.router_students
+import routers.router_students, routers.router_attendances, routers.router_sessions
 # Initialisation de l'API
 app = FastAPI(
     title="Attendance Tracker",
@@ -16,6 +16,9 @@ app = FastAPI(
 
 # Router dédié aux Students
 app.include_router(routers.router_students.router)
+app.include_router(routers.router_sessions.router)
+app.include_router(routers.router_attendances.router)
+
 
 # Reste à faire 
 # X Sortir mon student's router dans un dossier "routers"

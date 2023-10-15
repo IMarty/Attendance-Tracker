@@ -10,9 +10,9 @@ router= APIRouter(
 )
 
 students = [
-    Student(id="s1", name="Adama"),
-    Student(id="s2", name="Adrien"),
-    Student(id="ss3", name="Akbar")
+    Student(id="student1", name="Adama"),
+    Student(id="student2", name="Adrien"),
+    Student(id="student3", name="Akbar")
 ]
 
 # Verbs + Endpoints
