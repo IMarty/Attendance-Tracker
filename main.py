@@ -1,13 +1,13 @@
 # Import du framework
-from fastapi import FastAPI
+from fastapi import Depends, FastAPI
+from fastapi.security import OAuth2PasswordBearer
 
 # Documentation
 from documentations.description import api_description
 from documentations.tags import tags_metadata
 
 #Routers
-import routers.router_students, routers.router_attendances, routers.router_sessions
-
+import routers.router_students, routers.router_attendances, routers.router_sessions, routers.router_auth
 
 
 
@@ -19,9 +19,12 @@ app = FastAPI(
     openapi_tags= tags_metadata
 )
 
-# Mise en place de l'authentification par Firebase
+
+
+
 
 # Router dédié aux Students
 app.include_router(routers.router_students.router)
 app.include_router(routers.router_sessions.router)
 app.include_router(routers.router_attendances.router)
+app.include_router(routers.router_auth.router)

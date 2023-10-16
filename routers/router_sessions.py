@@ -30,7 +30,7 @@ async def get_sessions():
     resultArray = [value for value in fireBaseobject.values()]
     return resultArray
 
-# (10 minutes) 1. Exercice : en utilisant .child(sessions).child(sessions_id) renvoyez l'oject ou 404 is non trouvé
+# (10 minutes) 1. Exercice : en utilisant .child(sessions).child(sessions_id).get().val() renvoyez l'oject ou 404 is non trouvé
 @router.get('/{session_id}', response_model=Session)
 async def get_session_by_ID(session_id:str): 
     fireBaseobject = db.child('sessions').child(session_id).get().val()
