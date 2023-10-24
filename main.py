@@ -13,7 +13,8 @@ import routers.router_auth, routers.router_stripe
 app = FastAPI(
     title="Attendance Tracker",
     description=api_description,
-    openapi_tags= tags_metadata
+    openapi_tags= tags_metadata,
+    docs_url='/'
 )
 
 # Router dédié aux Students

@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Body, Depends, Header, Request
+from fastapi.responses import RedirectResponse
 import stripe
 from firebase_admin import auth
 from database.firebase import db
@@ -9,7 +10,9 @@ router = APIRouter(
 )
   
 # This is your test secret API key.
-stripe.api_key = 'sk_test_51O4KOiDeNOaTDGEGG4OxKmT4JEr1YM2x4bZHw5igZCy5mCoSoXJ0AiURkpAj7BqiEbbkh4f7JRKPdMgS8YuD9orm00tmrSj2iE'
+from dotenv import dotenv_values
+config = dotenv_values(".env")
+stripe.api_key = config['STRIPE_SK']
 
 YOUR_DOMAIN = 'http://localhost'
 
@@ -27,8 +30,11 @@ async def stripe_checkout():
             payment_method_types=['card'],
             success_url=YOUR_DOMAIN + '/stripe/success', # à modif par u noveau endpoint pour ajouter le success -> webhook
             cancel_url=YOUR_DOMAIN + '/stripe/cancel',
+            client_reference_id= "client_reference_id102312301230"
         )
-        return checkout_session
+        # return checkout_session
+        response = RedirectResponse(url=checkout_session['url'])
+        return response
     except Exception as e:
         return str(e)
 
@@ -45,7 +51,7 @@ async def webhook_received(request: Request, stripe_signature: str = Header(None
         event_data = event['data']
     except Exception as e:
         return {"error": str(e)}
-
+    print(event_data)
     event_type = event['type']
     if event_type == 'checkout.session.completed':
         print('checkout session completed')
