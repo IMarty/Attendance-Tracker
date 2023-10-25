@@ -1,12 +1,16 @@
+import json
 import firebase_admin
 from firebase_admin import credentials
 import pyrebase 
-from configs.firebase_config_example import firebaseConfig
 
-if not firebase_admin._apps:
-    cred = credentials.Certificate("configs/myapi-adcde-firebase-adminsdk-x2xzc-fbd6249976.json")
-    firebase_admin.initialize_app(cred)
+from dotenv import dotenv_values
 
-firebase = pyrebase.initialize_app(firebaseConfig)
+config = dotenv_values(".env")
+
+# Initialize Firebase Admin with the service account information
+cred = credentials.Certificate(json.loads(config['FIREBASE_SERVICE_ACCOUNT_KEY']))
+firebase_admin.initialize_app(cred)
+
+firebase = pyrebase.initialize_app(json.loads(config['FIREBASE_CONFIG']))
 db = firebase.database()
 authSession = firebase.auth()

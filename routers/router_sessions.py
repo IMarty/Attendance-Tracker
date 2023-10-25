@@ -4,6 +4,7 @@ import uuid
 from classes.schema_dto import Session, SessionNoID
 from database.firebase import db
 from routers.router_auth import get_current_user
+from routers.router_stripe import increment_stripe
 
 
 router= APIRouter(
@@ -28,7 +29,8 @@ async def get_sessions(userData: int = Depends(get_current_user)):
 async def create_sessions(givenName:SessionNoID, userData: int = Depends(get_current_user)):
     generatedId=uuid.uuid4()
     newSession= Session(id=str(generatedId), name=givenName.name)
-    db.child("users").child(userData['uid']).child("session").child(str(generatedId)).set(newSession.model_dump())
+    increment_stripe(userData['uid'])
+    db.child("users").child(userData['uid']).child("session").child(str(generatedId)).set(newSession.model_dump(), userData['idToken'])
     return newSession
 
 # 1. Exercice
