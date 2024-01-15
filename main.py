@@ -14,7 +14,7 @@ app = FastAPI(
     title="Attendance Tracker",
     description=api_description,
     openapi_tags= tags_metadata,
-    docs_url='/'
+    docs_url='/' 
 )
 
 # Router dédié aux Students
