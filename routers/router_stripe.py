@@ -4,6 +4,7 @@ import stripe
 from firebase_admin import auth
 from database.firebase import db
 from routers.router_auth import get_current_user
+import os
 router = APIRouter(
       tags=["Stripe"],
       prefix='/stripe'
@@ -79,6 +80,8 @@ async def stripe_usage(userData: int = Depends(get_current_user)):
     return stripe.Invoice.upcoming(customer=cust_id)
 
 def increment_stripe(userId:str):
+    if os.getenv('TESTING') == 'True':
+        return
     fireBase_user = auth.get_user(userId) # Identifiant firebase correspondant (uid)
     stripe_data= db.child("users").child(fireBase_user.uid).child("stripe").get().val()
     print(stripe_data.values())
